@@ -5,6 +5,7 @@ from .models import Car
 
 
 class CarSerializer(serializers.Serializer):
+    id = serializers.IntegerField(read_only=True)
     manufacturer = serializers.CharField(max_length=64)
     model = serializers.CharField(max_length=64)
     horse_powers = serializers.IntegerField(
@@ -14,7 +15,11 @@ class CarSerializer(serializers.Serializer):
         ]
     )
     is_broken = serializers.BooleanField()
-    problem_description = serializers.CharField(null=True)
+    problem_description = serializers.CharField(
+        required=False,
+        allow_null=True,
+        allow_blank=True,
+    )
 
     def create(self, validated_data):
         return Car.objects.create(**validated_data)
